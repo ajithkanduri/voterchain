@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 
+
 import static com.company.Vote.voterIds;
 
 /**
@@ -21,48 +22,56 @@ public class VotingPanel extends JFrame {
     private static String previousHash ="0";
     public static ArrayList<Block> blockchain = new ArrayList<Block>();
     public static ArrayList<Vote> votes = new ArrayList<Vote>();
-    int[] result = new int[8];
+    static int[] result = new int[9];
 
     public VotingPanel() {
+        for (int i=0;i<9;i++)
+        {
+            result[i] =0;
+        }
         initComponents();
     }
 
     private void button1ActionPerformed(ActionEvent e) {
         String voterId = textField1.getText();
-        if(voterId==null)
+
+        if(voterId.isEmpty())
         {
             JOptionPane.showMessageDialog(null,"Enter VoterId");
         }
         else
         {
-            if(checkBox1.isSelected())
+            if(checkBox1.isSelected()||checkBox2.isSelected()||checkBox3.isSelected()||checkBox4.isSelected()||checkBox5.isSelected()||checkBox6.isSelected()||checkBox7.isSelected()||checkBox8.isSelected())
             {
-                status = 1;
-            }
-            else if(checkBox2.isSelected())
+                if(checkBox1.isSelected())
+                {
+                    status = 1;
+                }
+                else if(checkBox2.isSelected())
             {
-                status = 2;
+                status = 4;
             }
             else if(checkBox3.isSelected())
             {
-                status = 3;
+                status = 2;
             }
             else if(checkBox4.isSelected())
             {
-                status = 4;
+                status = 7;
             } else if(checkBox5.isSelected())
             {
                 status = 5;
             } else if(checkBox6.isSelected())
             {
-                status = 6;
+                status = 3;
             } else if(checkBox7.isSelected())
             {
-                status = 7;
+                status = 8;
             }
             else if(checkBox8.isSelected())
             {
-                status = 8;
+                status = 6;
+            }
             }
             if(status==0)
             {
@@ -73,11 +82,13 @@ public class VotingPanel extends JFrame {
                 Vote vote = new Vote(voterId,String.valueOf(status));
                 if(vote.verifyVote())
                 {
+                    JOptionPane.showMessageDialog(null,"Your Vote has been registered!!");
                     voterIds.add(vote.getVoterId());
                     votes.add(vote);
-                    result[status]++;
-//                    previousHash = addVoteToBlock(vote,previousHash);
-//                    System.out.println(vote.getVoterId()+"has voted with hash:"+previousHash);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,"You cannot Vote!!");
                 }
             }
 
@@ -90,6 +101,10 @@ public class VotingPanel extends JFrame {
         {
             previousHash = addVoteToBlock(votes,previousHash);
         }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"There is nothing to mine");
+        }
     }
 
 
@@ -99,6 +114,25 @@ public class VotingPanel extends JFrame {
 
     private void button1MouseClicked(MouseEvent e) {
         // TODO add your code here
+    }
+
+    private void viewResults(ActionEvent e) {
+        int flag=0;
+        for (int i=0;i<voterIds.size();i++)
+        {
+            if(textField1.getText().toString().equals(voterIds.get(i)))
+            {
+                flag = 1;
+            }
+        }
+        if(flag ==1) {
+            Results results = new Results(result);
+            results.setVisible(true);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"Please vote to see results!!");
+        }
     }
 
     private void initComponents() {
@@ -120,9 +154,6 @@ public class VotingPanel extends JFrame {
         //======== this ========
         Container contentPane = getContentPane();
 
-        //---- textField1 ----
-        textField1.setText("Enter Voter Id");
-
         //---- checkBox1 ----
         checkBox1.setText("YSRCP");
 
@@ -142,7 +173,7 @@ public class VotingPanel extends JFrame {
         checkBox4.setText("CONGRESS");
 
         //---- checkBox7 ----
-        checkBox7.setText("CPI");
+        checkBox7.setText("NOTA");
 
         //---- checkBox8 ----
         checkBox8.setText("AAP");
@@ -177,6 +208,7 @@ public class VotingPanel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 button3ActionPerformed(e);
+                viewResults(e);
             }
         });
 
@@ -185,34 +217,39 @@ public class VotingPanel extends JFrame {
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(contentPaneLayout.createSequentialGroup()
+                    .addGap(158, 158, 158)
                     .addGroup(contentPaneLayout.createParallelGroup()
                         .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addGap(252, 252, 252)
-                            .addComponent(textField1, GroupLayout.PREFERRED_SIZE, 196, GroupLayout.PREFERRED_SIZE))
+                            .addComponent(button1, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
+                            .addComponent(button2)
+                            .addGap(9, 9, 9))
                         .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addGap(158, 158, 158)
+                            .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(checkBox8, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                                .addComponent(checkBox5, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                                .addComponent(checkBox6, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                                .addComponent(checkBox1, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
                             .addGroup(contentPaneLayout.createParallelGroup()
-                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addComponent(checkBox8, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                                    .addComponent(checkBox7, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE))
-                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addComponent(checkBox5, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                                    .addComponent(checkBox4, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE))
-                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addComponent(checkBox6, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                                    .addComponent(checkBox2, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE))
-                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addComponent(checkBox1, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                                    .addComponent(checkBox3, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE))
-                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addComponent(button1, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
-                                    .addComponent(button2)
-                                    .addGap(9, 9, 9)))))
+                                .addGroup(contentPaneLayout.createParallelGroup()
+                                    .addGroup(contentPaneLayout.createParallelGroup()
+                                        .addGroup(contentPaneLayout.createParallelGroup()
+                                            .addGroup(contentPaneLayout.createSequentialGroup()
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(checkBox3, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(contentPaneLayout.createSequentialGroup()
+                                                .addGap(12, 12, 12)
+                                                .addComponent(textField1, GroupLayout.PREFERRED_SIZE, 196, GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                            .addGap(114, 114, 114)
+                                            .addComponent(checkBox2, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                        .addGap(114, 114, 114)
+                                        .addComponent(checkBox4, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                    .addGap(114, 114, 114)
+                                    .addComponent(checkBox7, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)))))
                     .addGap(200, 200, 200))
                 .addGroup(contentPaneLayout.createSequentialGroup()
                     .addGap(249, 249, 249)
@@ -238,8 +275,8 @@ public class VotingPanel extends JFrame {
                         .addComponent(checkBox5))
                     .addGap(18, 18, 18)
                     .addGroup(contentPaneLayout.createParallelGroup()
-                        .addComponent(checkBox8)
-                        .addComponent(checkBox7))
+                        .addComponent(checkBox7)
+                        .addComponent(checkBox8))
                     .addGap(30, 30, 30)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(button1)
@@ -250,18 +287,35 @@ public class VotingPanel extends JFrame {
         );
         pack();
         setLocationRelativeTo(getOwner());
+
+        //---- buttonGroup1 ----
+        ButtonGroup buttonGroup1 = new ButtonGroup();
+        buttonGroup1.add(checkBox1);
+        buttonGroup1.add(checkBox2);
+        buttonGroup1.add(checkBox3);
+        buttonGroup1.add(checkBox5);
+        buttonGroup1.add(checkBox6);
+        buttonGroup1.add(checkBox4);
+        buttonGroup1.add(checkBox7);
+        buttonGroup1.add(checkBox8);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
     public static String addVoteToBlock(ArrayList<Vote> vote,String previousHash)
     {
         System.out.println("Trying To mineBlock...");
-        Block block = new Block(vote,previousHash);
-        block.mineBlock(difficulty);
-        if(verifyChain(block)) {
-            blockchain.add(block);
-            votes.clear();
-        }
-        return block.getBlockHash();
+
+            Block block = new Block(vote, previousHash);
+            block.mineBlock(difficulty);
+            if (verifyChain(block)) {
+                blockchain.add(block);
+                for (int i=0;i<votes.size();i++)
+                {
+                    result[Integer.parseInt(votes.get(i).getVoteParty())]++;
+                }
+                votes.clear();
+            }
+            return block.getBlockHash();
+
     }
 
 
@@ -272,9 +326,10 @@ public class VotingPanel extends JFrame {
                 return false;
             }
         }
-        if(!(blockchain.get(blockchain.size()-1).getBlockHash()==block.getPreviousHash()))
-        {
-            return false;
+        if(blockchain.size()>0) {
+            if (!(blockchain.get(blockchain.size()-1).getBlockHash() == block.getPreviousHash())) {
+                return false;
+            }
         }
         return true;
     }
@@ -295,3 +350,4 @@ public class VotingPanel extends JFrame {
     private JButton button3;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
+

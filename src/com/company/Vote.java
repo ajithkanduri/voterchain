@@ -8,10 +8,20 @@ public class Vote implements Serializable
     private String voterId;
     static ArrayList<String> voterIds = new ArrayList<String>();
     private String voteParty;
-
+    public static  ArrayList<String> ids = new ArrayList<String>();
 
     public Vote(String voterId, String voteParty)
     {
+        ids.add("1");
+        ids.add("2");
+        ids.add("3");
+        ids.add("4");
+        ids.add("5");
+        ids.add("6");
+        ids.add("7");
+        ids.add("8");
+        ids.add("9");
+        ids.add("10");
         this.voterId=voterId;
         this.voteParty=voteParty;
     }
@@ -24,8 +34,16 @@ public class Vote implements Serializable
                 return false;
             }
         }
-        addVoter();
-        return true;
+        for (int i=0;i<ids.size();i++)
+        {
+            if(ids.get(i).equals(voterId))
+            {
+                addVoter();
+                return true;
+            }
+        }
+
+        return false;
     }
     public void addVoter()
     {
